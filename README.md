@@ -2,7 +2,7 @@
 
 An interactive web visualization that demonstrates why the [Heighway Dragon curve](https://en.wikipedia.org/wiki/Dragon_curve) has an area of exactly **½**, using a square-construction method inspired by the classic paper-folding sequence.
 
-🔗 **Live Demo:** Open `heighway-area.html` in any modern browser.
+🔗 **Live Demo:** Open [`heighway-area.html`](https://luishvn440-hub.github.io/Heighway-Dragon-Area/heighway-area.html) in any modern browser.
 
 ---
 
