@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Heighway Dragon — Area via Rectangles</title>
+  <link rel="stylesheet" href="heighway-area-style.css"/>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <span class="eyebrow">Fractal Curve Explorer</span>
+    <h1>Heighway Dragon — Area</h1>
+    <p class="subtitle">Construction via paired rectangles · Area = ½ for every even iteration</p>
+  </div>
+</header>
+
+<main>
+
+  <!-- Mode tabs -->
+  <div class="tabs">
+    <button class="tab active" data-mode="squares">Rectangle pairs</button>
+    <button class="tab" data-mode="tiling">4-copy tiling</button>
+    <button class="tab" data-mode="curve">Curve only</button>
+  </div>
+
+  <!-- Controls -->
+  <div class="controls">
+
+    <div class="field">
+      <label for="depth">Iteration <span class="fv" id="dv">6</span></label>
+      <input type="range" id="depth" min="1" max="12" step="1" value="6"/>
+    </div>
+
+    <div class="field">
+      <label for="colormode">Square color</label>
+      <div class="sel-wrap">
+        <select id="colormode">
+          <option value="alternating">Alternating red/blue</option>
+          <option value="single">Single color</option>
+          <option value="rainbow">Rainbow</option>
+        </select>
+        <span class="ch">▾</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="scheme">Palette</label>
+      <div class="sel-wrap">
+        <select id="scheme">
+          <option value="violet">Violet</option>
+          <option value="teal">Teal</option>
+          <option value="coral">Coral</option>
+          <option value="blue">Blue</option>
+          <option value="amber">Amber</option>
+        </select>
+        <span class="ch">▾</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="showcurve">Show curve</label>
+      <div class="sel-wrap">
+        <select id="showcurve">
+          <option value="on">On</option>
+          <option value="off">Off</option>
+        </select>
+        <span class="ch">▾</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="showboundary">Boundary</label>
+      <div class="sel-wrap">
+        <select id="showboundary">
+          <option value="on">On (red dashed)</option>
+          <option value="off">Off</option>
+        </select>
+        <span class="ch">▾</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="showgrid">Lattice grid</label>
+      <div class="sel-wrap">
+        <select id="showgrid">
+          <option value="off">Off</option>
+          <option value="on">On</option>
+        </select>
+        <span class="ch">▾</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Canvas -->
+  <div class="canvas-box">
+    <div id="wrap"></div>
+  </div>
+
+  <!-- Area readout -->
+  <div class="area-readout" id="area-readout">
+    <div class="area-item">
+      <span class="area-label">Iteration</span>
+      <span class="area-val" id="out-iter">—</span>
+    </div>
+    <div class="area-item">
+      <span class="area-label">Segments</span>
+      <span class="area-val" id="out-segs">—</span>
+    </div>
+    <div class="area-item">
+      <span class="area-label">Squares</span>
+      <span class="area-val" id="out-sq">—</span>
+    </div>
+    <div class="area-item">
+      <span class="area-label">Square side</span>
+      <span class="area-val" id="out-side">—</span>
+    </div>
+    <div class="area-item">
+      <span class="area-label">Square area</span>
+      <span class="area-val" id="out-sqarea">—</span>
+    </div>
+    <div class="area-item highlight">
+      <span class="area-label">Total area</span>
+      <span class="area-val" id="out-total">—</span>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <button onclick="downloadSVG()">↓ Download SVG</button>
+  </div>
+
+  <!-- Info cards -->
+  <div class="info-grid">
+    <div class="ic">
+      <h3>Rectangle construction</h3>
+      <p>Traverse the dragon from tail to head. Each consecutive <em>pair</em> of segments forms two sides of a square (since every turn is ±90°). That square is drawn and counted.</p>
+      <p>At even iteration k: squares align with the axis grid. At odd k: squares are rotated 45°.</p>
+    </div>
+    <div class="ic">
+      <h3>Area formula</h3>
+      <p>At iteration k there are 2<sup>k</sup> segments and therefore 2<sup>k−1</sup> squares. Each segment has length (1/√2)<sup>k</sup>, so each square has area (1/√2)<sup>2k</sup> = 1/2<sup>k</sup>.</p>
+      <p style="font-family:monospace;font-size:11px;margin-top:4px">A<sub>k</sub> = 2<sup>k−1</sup> × 1/2<sup>k</sup> = <strong>1/2</strong></p>
+      <p>This holds for every k — the area is always exactly ½.</p>
+    </div>
+    <div class="ic">
+      <h3>Tiling the plane</h3>
+      <p>The squares from any iteration can tile the plane with 4 rotated copies (0°, 90°, 180°, 270°), just as the dragon curve itself tiles the plane.</p>
+      <p>Four copies × area ½ = total area 2 per fundamental domain, confirming the tiling fills space exactly.</p>
+    </div>
+    <div class="ic">
+      <h3>Why area = ½</h3>
+      <p>As k → ∞ both the dragon and the square approximations tile the plane. The dragon's area equals the limit of A<sub>k</sub> = ½. Equivalently, the 2 IFS maps each scale by 1/√2, so 2 × (1/√2)² = 1, giving area = 1/(2×1) = ½.</p>
+    </div>
+  </div>
+
+</main>
+
+<script src="heighway-area-script.js"></script>
+</body>
+</html>
